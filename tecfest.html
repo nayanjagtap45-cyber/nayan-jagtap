@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>CYBORG FUTURIX | IIT Bombay Tecfest 2026</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #05050f;
+      font-family: 'Orbitron', monospace;
+      overflow-x: hidden;
+      color: #e0e0ff;
+      scroll-behavior: smooth;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0a0a1a;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #00f0ff;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #0ff;
+    }
+
+    /* Animated gradient background + grid overlay */
+    .cyber-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -2;
+      background: radial-gradient(circle at 20% 30%, #030318, #000000);
+    }
+    .glow-grid {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: 
+        linear-gradient(rgba(0, 240, 255, 0.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 240, 255, 0.08) 1px, transparent 1px);
+      background-size: 50px 50px;
+      z-index: -1;
+      pointer-events: none;
+      animation: gridShift 20s linear infinite;
+    }
+    @keyframes gridShift {
+      0% { transform: translate(0,0); }
+      100% { transform: translate(50px, 50px); }
+    }
+
+    /* scan lines effect */
+    .scanlines {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: repeating-linear-gradient(0deg, rgba(0,0,0,0.1) 0px, rgba(0,0,0,0.1) 2px, transparent 2px, transparent 8px);
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    /* nav bar */
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.2rem 5%;
+      backdrop-filter: blur(12px);
+      background: rgba(5, 5, 20, 0.65);
+      border-bottom: 1px solid rgba(0, 255, 255, 0.3);
+      position: sticky;
+      top: 0;
+      z-index: 99;
+      flex-wrap: wrap;
+    }
+    .logo {
+      font-size: 1.6rem;
+      font-weight: 800;
+      letter-spacing: 2px;
+      background: linear-gradient(135deg, #aaffff, #0ff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 0 8px cyan;
+    }
+    .logo span {
+      font-size: 0.8rem;
+      background: none;
+      color: #0ff;
+      text-shadow: none;
+    }
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+    }
+    .nav-links a {
+      color: #cccfff;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.9rem;
+      letter-spacing: 1px;
+      transition: 0.3s;
+      border-bottom: 2px solid transparent;
+      padding-bottom: 5px;
+    }
+    .nav-links a:hover {
+      color: #0ff;
+      border-bottom-color: #0ff;
+      text-shadow: 0 0 6px cyan;
+    }
+
+    /* main hero section */
+    .hero {
+      min-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 2rem;
+      position: relative;
+    }
+    .glitch-wrapper {
+      margin-bottom: 1rem;
+    }
+    .glitch {
+      font-size: clamp(2.5rem, 10vw, 5.2rem);
+      font-weight: 900;
+      text-transform: uppercase;
+      position: relative;
+      text-shadow: 0.05em 0 0 rgba(255,0,100,0.6), -0.05em -0.025em 0 rgba(0,255,255,0.6);
+      animation: glitch-shake 0.3s infinite alternate;
+      color: #eef4ff;
+    }
+    @keyframes glitch-shake {
+      0% { transform: skew(0deg, 0deg); text-shadow: 0.05em 0 0 #ff00c1, -0.05em -0.025em 0 #00ffff; }
+      100% { transform: skew(0.5deg, -0.3deg); text-shadow: -0.05em 0 0 #00ffff, 0.025em 0.05em 0 #ff00c1; }
+    }
+    .glitch::before, .glitch::after {
+      content: attr(data-text);
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+    .glitch::before {
+      animation: glitch-1 0.4s infinite linear alternate-reverse;
+      color: #ff66cc;
+      z-index: -1;
+    }
+    .glitch::after {
+      animation: glitch-2 0.3s infinite linear alternate-reverse;
+      color: #0ff;
+      z-index: -2;
+    }
+    @keyframes glitch-1 {
+      0% { clip-path: inset(20% 0 30% 0); transform: translate(-2px, 1px); }
+      100% { clip-path: inset(80% 0 5% 0); transform: translate(2px, -1px); }
+    }
+    @keyframes glitch-2 {
+      0% { clip-path: inset(60% 0 10% 0); transform: translate(2px, -2px); }
+      100% { clip-path: inset(15% 0 60% 0); transform: translate(-2px, 2px); }
+    }
+
+    .tagline {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 1.2rem;
+      letter-spacing: 3px;
+      color: #aaffdd;
+      margin-bottom: 1.5rem;
+      text-shadow: 0 0 6px cyan;
+      border-right: 2px solid cyan;
+      white-space: nowrap;
+      overflow: hidden;
+      width: 0;
+      animation: typing 3s steps(35, end) forwards, blink 0.7s infinite;
+    }
+    @keyframes typing {
+      from { width: 0; }
+      to { width: 100%; }
+    }
+    @keyframes blink {
+      50% { border-color: transparent; }
+    }
+
+    .cyber-btn {
+      background: rgba(0, 20, 30, 0.7);
+      border: 2px solid #0ff;
+      color: #0ff;
+      padding: 12px 32px;
+      font-family: 'Orbitron', monospace;
+      font-weight: bold;
+      font-size: 1.1rem;
+      letter-spacing: 2px;
+      cursor: pointer;
+      margin-top: 2rem;
+      backdrop-filter: blur(5px);
+      transition: 0.3s;
+      box-shadow: 0 0 8px rgba(0,255,255,0.5);
+      border-radius: 30px;
+    }
+    .cyber-btn:hover {
+      background: #0ff;
+      color: #010118;
+      box-shadow: 0 0 20px #0ff, inset 0 0 5px black;
+      transform: scale(1.03);
+    }
+
+    /* floating cyborg elements */
+    .floating-ai {
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+      width: 100px;
+      opacity: 0.6;
+      pointer-events: none;
+      animation: float 4s infinite alternate;
+    }
+    @keyframes float {
+      0% { transform: translateY(0px); }
+      100% { transform: translateY(-15px); }
+    }
+
+    /* featured events / highlights section */
+    .section-title {
+      text-align: center;
+      font-size: 2.5rem;
+      margin: 3rem 0 1rem;
+      text-transform: uppercase;
+      letter-spacing: 5px;
+      background: linear-gradient(145deg, #c0f0ff, #0cf);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .events-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 2rem;
+      padding: 2rem 5%;
+    }
+    .event-card {
+      background: rgba(10, 20, 35, 0.7);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(0, 255, 255, 0.4);
+      border-radius: 20px;
+      padding: 2rem 1.5rem;
+      width: 260px;
+      text-align: center;
+      transition: 0.4s;
+      cursor: pointer;
+      box-shadow: 0 0 15px rgba(0,255,200,0.1);
+    }
+    .event-card:hover {
+      transform: translateY(-12px);
+      border-color: cyan;
+      box-shadow: 0 0 30px rgba(0,255,255,0.5);
+    }
+    .event-icon {
+      font-size: 3rem;
+      color: #0ff;
+      margin-bottom: 1rem;
+      display: inline-block;
+      animation: pulseIcon 2s infinite;
+    }
+    @keyframes pulseIcon {
+      0% { text-shadow: 0 0 2px cyan; transform: scale(1);}
+      100% { text-shadow: 0 0 16px cyan; transform: scale(1.05);}
+    }
+    .event-card h3 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+    .event-card p {
+      font-family: monospace;
+      font-size: 0.85rem;
+      color: #bbddff;
+    }
+
+    /* countdown timer */
+    .countdown-wrap {
+      background: rgba(0,0,0,0.6);
+      border-top: 1px solid cyan;
+      border-bottom: 1px solid cyan;
+      padding: 2rem;
+      margin: 3rem 0;
+      text-align: center;
+    }
+    .timer {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+    .timer-block {
+      background: #010a14;
+      padding: 1rem;
+      min-width: 90px;
+      border-radius: 12px;
+      border: 1px solid #0ff;
+      box-shadow: 0 0 12px #0ff33f;
+    }
+    .timer-number {
+      font-size: 2.8rem;
+      font-weight: 800;
+      font-family: 'Share Tech Mono', monospace;
+      color: #0ff;
+      text-shadow: 0 0 8px blue;
+    }
+    .timer-label {
+      font-size: 0.7rem;
+      letter-spacing: 2px;
+    }
+
+    /* newsletter / CTA */
+    .neural-section {
+      display: flex;
+      justify-content: center;
+      padding: 3rem 1rem;
+    }
+    .cyber-card {
+      background: rgba(0, 20, 40, 0.65);
+      backdrop-filter: blur(10px);
+      border-radius: 30px;
+      width: 100%;
+      max-width: 500px;
+      padding: 2.2rem;
+      text-align: center;
+      border: 1px solid #0ff;
+    }
+    .input-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 1rem;
+    }
+    .input-group input {
+      flex: 1;
+      background: #111a22;
+      border: 1px solid #2fa;
+      padding: 12px;
+      font-family: monospace;
+      color: cyan;
+      outline: none;
+      border-radius: 40px;
+    }
+    .input-group button {
+      background: #0ff;
+      border: none;
+      color: black;
+      font-weight: bold;
+      padding: 0 24px;
+      border-radius: 40px;
+      font-family: 'Orbitron';
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.7rem;
+      color: #6699aa;
+      border-top: 1px solid rgba(0,255,255,0.2);
+    }
+
+    /* responsive */
+    @media (max-width: 750px) {
+      .nav-links { gap: 1rem; }
+      .timer-block { min-width: 65px; }
+      .timer-number { font-size: 2rem; }
+      .tagline { font-size: 0.9rem; white-space: normal; animation: none; border-right: none; width: auto; text-align: center; }
+    }
+
+    /* particle canvas */
+    #particleCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .glow-text {
+      color: #0ff;
+    }
+  </style>
+</head>
+<body>
+
+<div class="cyber-bg"></div>
+<div class="glow-grid"></div>
+<div class="scanlines"></div>
+<canvas id="particleCanvas"></canvas>
+
+<nav>
+  <div class="logo">CYBORG<span>_FUTURIX</span></div>
+  <div class="nav-links">
+    <a href="#">HOME</a>
+    <a href="#">EVENTS</a>
+    <a href="#">CYBER DOME</a>
+    <a href="#">REGISTER</a>
+  </div>
+</nav>
+
+<main>
+  <div class="hero">
+    <div class="glitch-wrapper">
+      <div class="glitch" data-text="TECFEST 2026">TECFEST 2026</div>
+    </div>
+    <div class="tagline">// CYBORG ASCENSION : INTERFACE THE FUTURE //</div>
+    <p style="max-width: 700px; margin-top: 1rem; font-size: 1rem; text-shadow: 0 0 3px black;">
+      IIT Bombay presents the most immersive cybernetic tech-festival — AI, robotics, neural hacking, and beyond.
+      <strong class="glow-text"> Upgraded. Connected. Relentless. </strong>
+    </p>
+    <button class="cyber-btn" id="exploreBtn">⟡ INITIATE PROTOCOL ⟡</button>
+    <div class="floating-ai">
+      <i class="fas fa-microchip" style="font-size: 70px; color: cyan; opacity: 0.5; filter: drop-shadow(0 0 6px cyan);"></i>
+    </div>
+  </div>
+
+  <h2 class="section-title">⚡ CYBORG DOMAINS ⚡</h2>
+  <div class="events-container">
+    <div class="event-card" data-event="Neural Interface">
+      <div class="event-icon"><i class="fas fa-brain"></i></div>
+      <h3>Neural Interface</h3>
+      <p>Mind-controlled drones, BCI hackathons & synthetic cognition battles.</p>
+    </div>
+    <div class="event-card" data-event="Cyber Warfare">
+      <div class="event-icon"><i class="fas fa-shield-haltered"></i></div>
+      <h3>Cyber Warfare</h3>
+      <p>Ethical hacking, capture-the-flag & AI defense championship.</p>
+    </div>
+    <div class="event-card" data-event="Mech Battle">
+      <div class="event-icon"><i class="fas fa-robot"></i></div>
+      <h3>Mech Battle</h3>
+      <p>1-ton combat robots, autonomous warfare & drone racing league.</p>
+    </div>
+    <div class="event-card" data-event="Cybernix">
+      <div class="event-icon"><i class="fas fa-microchip"></i></div>
+      <h3>Cybernix</h3>
+      <p>Cyborg art, AI-generated realities & synthetic media showcase.</p>
+    </div>
+  </div>
+
+  <div class="countdown-wrap">
+    <h3 style="letter-spacing: 2px; margin-bottom: 20px;"><i class="fas fa-hourglass-half"></i> HUMAN-TO-CYBORG SYNCHRONIZATION IN</h3>
+    <div class="timer" id="countdown">
+      <div class="timer-block"><div class="timer-number" id="days">00</div><div class="timer-label">DAYS</div></div>
+      <div class="timer-block"><div class="timer-number" id="hours">00</div><div class="timer-label">HOURS</div></div>
+      <div class="timer-block"><div class="timer-number" id="minutes">00</div><div class="timer-label">MINUTES</div></div>
+      <div class="timer-block"><div class="timer-number" id="seconds">00</div><div class="timer-label">SECONDS</div></div>
+    </div>
+  </div>
+
+  <div class="neural-section">
+    <div class="cyber-card">
+      <h2><i class="fas fa-plug"></i> NEURAL SYNC</h2>
+      <p style="margin: 12px 0;">Subscribe to neural pulse updates. Get exclusive access to cyborg workshops & IITB Tecfest secret events.</p>
+      <div class="input-group">
+        <input type="email" placeholder="your.cyber@iitb.in" id="subEmail">
+        <button id="subBtn">SYNCHRONIZE</button>
+      </div>
+      <div id="msgArea" style="margin-top: 15px; font-size: 0.8rem; color: #0fa;"></div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <i class="fas fa-cogs"></i>  CYBORG REVOLUTION // IIT BOMBAY TECFEST 2026 //  SENTIENT CODE •  NEURAL NEXUS  <i class="fas fa-microchip"></i>
+</footer>
+
+<script>
+  // Particle animation - cybernetic floating particles
+  const canvas = document.getElementById('particleCanvas');
+  const ctx = canvas.getContext('2d');
+  let width = window.innerWidth, height = window.innerHeight;
+  let particles = [];
+
+  function resizeCanvas() {
+    width = window.innerWidth;
+    height = window.innerHeight;
+    canvas.width = width;
+    canvas.height = height;
+  }
+  window.addEventListener('resize', resizeCanvas);
+  resizeCanvas();
+
+  class Particle {
+    constructor() {
+      this.x = Math.random() * width;
+      this.y = Math.random() * height;
+      this.size = Math.random() * 2.5 + 1;
+      this.speedX = (Math.random() - 0.5) * 0.5;
+      this.speedY = (Math.random() - 0.5) * 0.3;
+      this.color = `rgba(0, ${Math.floor(180 + Math.random() * 75)}, 255, ${Math.random() * 0.6 + 0.2})`;
+    }
+    update() {
+      this.x += this.speedX;
+      this.y += this.speedY;
+      if (this.x < 0) this.x = width;
+      if (this.x > width) this.x = 0;
+      if (this.y < 0) this.y = height;
+      if (this.y > height) this.y = 0;
+    }
+    draw() {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+      ctx.fillStyle = this.color;
+      ctx.fill();
+      ctx.shadowBlur = 8;
+      ctx.shadowColor = "#0ff";
+    }
+  }
+  function initParticles(count) {
+    particles = [];
+    for (let i = 0; i < count; i++) {
+      particles.push(new Particle());
+    }
+  }
+  function animateParticles() {
+    ctx.clearRect(0, 0, width, height);
+    for (let p of particles) {
+      p.update();
+      p.draw();
+    }
+    requestAnimationFrame(animateParticles);
+  }
+  initParticles(120);
+  animateParticles();
+
+  // Countdown timer: set for March 1, 2026 (typical Tecfest period, cyborg style)
+  const targetDate = new Date(2026, 2, 1, 10, 0, 0).getTime(); // March 1, 2026 10:00:00
+
+  function updateCountdown() {
+    const now = new Date().getTime();
+    const distance = targetDate - now;
+    if (distance < 0) {
+      document.getElementById('days').innerText = "00";
+      document.getElementById('hours').innerText = "00";
+      document.getElementById('minutes').innerText = "00";
+      document.getElementById('seconds').innerText = "00";
+      return;
+    }
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((distance % (86400000)) / (3600000));
+    const minutes = Math.floor((distance % 3600000) / 60000);
+    const seconds = Math.floor((distance % 60000) / 1000);
+    document.getElementById('days').innerText = days < 10 ? '0' + days : days;
+    document.getElementById('hours').innerText = hours < 10 ? '0' + hours : hours;
+    document.getElementById('minutes').innerText = minutes < 10 ? '0' + minutes : minutes;
+    document.getElementById('seconds').innerText = seconds < 10 ? '0' + seconds : seconds;
+  }
+  setInterval(updateCountdown, 1000);
+  updateCountdown();
+
+  // Button actions & animations
+  const exploreBtn = document.getElementById('exploreBtn');
+  exploreBtn.addEventListener('click', () => {
+    alert('⚡ CYBORG PROTOCOL ACTIVATED ⚡\nWelcome to TecFest 2026 — Neural interface loading... More info: tecfest.iitb.ac.in/cyborg');
+    // create ripple effect
+    exploreBtn.style.transform = 'scale(0.98)';
+    setTimeout(() => { exploreBtn.style.transform = ''; }, 200);
+  });
+
+  // newsletter subscription + animation message
+  const subBtn = document.getElementById('subBtn');
+  const subEmail = document.getElementById('subEmail');
+  const msgArea = document.getElementById('msgArea');
+  subBtn.addEventListener('click', () => {
+    const email = subEmail.value.trim();
+    if (!email || !email.includes('@') || !email.includes('.')) {
+      msgArea.innerHTML = '<span style="color:#ff6680;">❌ Neural link error: invalid synaptic address.</span>';
+      setTimeout(() => { if(msgArea) msgArea.innerHTML = ''; }, 2500);
+      return;
+    }
+    msgArea.innerHTML = '<span style="color:#0ff;">✅ Cyborg subscription confirmed! Data injected into neural grid.</span>';
+    subEmail.value = '';
+    setTimeout(() => {
+      if(msgArea) msgArea.innerHTML = '';
+    }, 3000);
+  });
+
+  // Add interactive neural pulse on event cards with hover + click message
+  const cards = document.querySelectorAll('.event-card');
+  cards.forEach(card => {
+    card.addEventListener('click', () => {
+      const title = card.querySelector('h3')?.innerText || 'Cyborg Module';
+      alert(`⟡ ${title} ⟡\nAccess restricted to IIT Bombay TecFest participants. Register to unlock neural battlegrounds.`);
+    });
+    // additional pulse on hover animation can be done via css already but extra effect: data-glitch
+    card.addEventListener('mouseenter', (e) => {
+      card.style.transform = 'translateY(-12px) scale(1.01)';
+    });
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = '';
+    });
+  });
+
+  // dynamic console greeting
+  console.log("%c⚡ CYBORG TECFEST 2026 ⚡ | IIT BOMBAY | INITIATED", "color: #0ff; font-size: 16px; font-family: monospace;");
+  
+  // glithcy rotating background text effect? additional animation for timer numbers
+  const timerNumbers = document.querySelectorAll('.timer-number');
+  setInterval(() => {
+    timerNumbers.forEach(num => {
+      if(Math.random() > 0.97) {
+        num.style.textShadow = '0 0 12px magenta';
+        setTimeout(() => { num.style.textShadow = '0 0 8px blue'; }, 150);
+      } else {
+        num.style.textShadow = '0 0 8px cyan';
+      }
+    });
+  }, 800);
+  
+  // optional: a scanning line in hero? but fine.
+  // additional cyber glitch effect on title 
+  const glitchElem = document.querySelector('.glitch');
+  if(glitchElem) {
+    setInterval(() => {
+      const original = glitchElem.getAttribute('data-text');
+      if(Math.random() > 0.85) {
+        glitchElem.style.opacity = '0.9';
+        glitchElem.style.transform = 'skew(1deg, -1deg)';
+        setTimeout(() => {
+          glitchElem.style.transform = '';
+          glitchElem.style.opacity = '1';
+        }, 100);
+      }
+    }, 800);
+  }
+
+  // smooth scroll behavior for nav links (just effect)
+  document.querySelectorAll('.nav-links a').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+      e.preventDefault();
+      // just to simulate some terminal action
+      alert(`[NAVIGATION] Interface: ${this.innerText} - Accessing cyborg mainframe...\nStay tuned for IIT Bombay TecFest live!`);
+    });
+  });
+</script>
+</body>
+</html>
